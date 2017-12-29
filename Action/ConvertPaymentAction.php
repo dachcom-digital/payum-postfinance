@@ -5,7 +5,7 @@ namespace DachcomDigital\Payum\PostFinance\Action;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
-use CoreShop\Component\Payment\Model\PaymentInterface;
+use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Request\Convert;
 
 class ConvertPaymentAction implements ActionInterface
@@ -23,7 +23,7 @@ class ConvertPaymentAction implements ActionInterface
         $payment = $request->getSource();
 
         $details = ArrayObject::ensureArrayObject($payment->getDetails());
-        $details['ORDERID'] = $payment->getOrderId();
+        $details['ORDERID'] = $payment->getNumber();
         $details['CURRENCY'] = $payment->getCurrencyCode();
         $details['AMOUNT'] = $payment->getTotalAmount();
 
