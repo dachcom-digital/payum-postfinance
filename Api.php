@@ -96,7 +96,7 @@ class Api
         'shaOutPassphrase'  => null,
         'pspid'             => null,
         'environment'       => self::TEST,
-        'defaultParameters' => []
+        'optionalParameters' => []
     ];
 
     /**
@@ -190,7 +190,7 @@ class Api
      */
     protected function addGlobalParams(array &$params)
     {
-        $params = array_merge($this->options['defaultParameters'], $params);
+        $params = array_merge($this->options['optionalParameters'], $params);
 
         $params['PSPID'] = $this->options['pspid'];
         $params['SHASIGN'] = $this->createShaHash($params, $this->options['shaInPassphrase']);

@@ -46,7 +46,7 @@ class PostFinanceGatewayFactory extends GatewayFactory
                         'shaInPassphrase'   => $config['shaInPassphrase'],
                         'shaOutPassphrase'  => $config['shaOutPassphrase'],
                         'pspid'             => $config['pspid'],
-                        'defaultParameters' => isset($config['defaultParameters']) ? $config['defaultParameters'] : []
+                        'optionalParameters' => isset($config['optionalParameters']) ? $config['optionalParameters'] : []
                     ],
                     $config['payum.http_client'],
                     $config['httplug.message_factory']
