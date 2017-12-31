@@ -26,6 +26,7 @@ class ConvertPaymentAction implements ActionInterface
         $details['ORDERID'] = $payment->getNumber();
         $details['CURRENCY'] = $payment->getCurrencyCode();
         $details['AMOUNT'] = $payment->getTotalAmount();
+        $details['COM'] = $payment->getDescription();
 
         $request->setResult((array)$details);
     }
