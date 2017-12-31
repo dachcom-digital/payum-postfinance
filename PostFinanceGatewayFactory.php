@@ -42,10 +42,10 @@ class PostFinanceGatewayFactory extends GatewayFactory
 
                 return new Api(
                     [
-                        'sandbox'           => $config['environment'] === Api::TEST,
-                        'shaInPassphrase'   => $config['shaInPassphrase'],
-                        'shaOutPassphrase'  => $config['shaOutPassphrase'],
-                        'pspid'             => $config['pspid'],
+                        'sandbox'            => $config['environment'] === Api::TEST,
+                        'shaInPassphrase'    => $config['shaInPassphrase'],
+                        'shaOutPassphrase'   => $config['shaOutPassphrase'],
+                        'pspid'              => $config['pspid'],
                         'optionalParameters' => isset($config['optionalParameters']) ? $config['optionalParameters'] : []
                     ],
                     $config['payum.http_client'],

@@ -45,6 +45,7 @@ class StatusAction implements ActionInterface
                 $request->markRefunded();
                 break;
             case EcommercePaymentResponse::STATUS_CANCELLED_BY_CLIENT:
+            case EcommercePaymentResponse::STATUS_PAYMENT_DELETED:
                 $request->markCanceled();
                 break;
             default:

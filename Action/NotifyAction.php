@@ -54,6 +54,7 @@ class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayAwareIn
         }
 
         $details->replace($httpRequest->query);
+        throw new HttpResponse('OK', 200);
     }
 
     /**
