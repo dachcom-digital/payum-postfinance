@@ -10,7 +10,7 @@
 ## Server To Server
 You may want to enable the server-to-server functionality:
 Go to "Transaction feedback" and set "Direct HTTP server-to-server request" to "Always deferred (not immediately after the payment)." for example.
-In both URL fields you need to add `http://payment-test.ddnss.ch/payment/notify/<PARAMVAR>`. Note the `<PARAMVAR>` var. It gets replaced by postFinance.
+In both URL fields you need to add `http://your-domain.com/payment/notify/<PARAMVAR>`. Note the `<PARAMVAR>` var. It gets replaced by postFinance.
 
 **Important:** Set "Request method" to "GET" since the notifyAction only listens to the request query.
 
