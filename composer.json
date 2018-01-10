@@ -24,7 +24,5 @@
         "psr-4": {
             "DachcomDigital\\Payum\\PostFinance\\": ""
         }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
