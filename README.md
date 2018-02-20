@@ -1,5 +1,9 @@
 # Payum PostFinance
 
+## Important Information
+PostFinance fires the callback page **twice** if the user clicks the *"abort"* or *"ok"* button.
+You need to implement a custom HttpRequestVerifierBuilder like [here](https://github.com/coreshop/PayumPostFinanceBundle/blob/master/src/CoreShop/Payum/PostFinance/Security/HttpRequestVerifier.php#L54) to disable the token invalidation!
+
 ## PostFinance Backend Configuration
 
 1. In the Global Security Parameters tab, choose "each parameter followed by the passphrase."
