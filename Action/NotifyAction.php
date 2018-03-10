@@ -49,7 +49,7 @@ class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayAwareIn
         $this->gateway->execute($currency = new GetCurrency($payment->getCurrencyCode()));
         $divisor = pow(10, $currency->exp);
 
-        if ($details['AMOUNT'] !== ($parameters['AMOUNT'] * $divisor)) {
+        if ((int)$details['AMOUNT'] !== (int)($parameters['AMOUNT'] * $divisor)) {
             throw new HttpResponse('The notification is invalid. Code 2', 400);
         }
 
