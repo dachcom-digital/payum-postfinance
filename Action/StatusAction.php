@@ -25,8 +25,10 @@ class StatusAction implements ActionInterface
             $request->markNew();
             return;
         }
+        
+        $status = (int)$model['STATUS'];
 
-        switch ($model['STATUS']) {
+        switch ($status) {
             case EcommercePaymentResponse::STATUS_AUTHORISED:
                 $request->markAuthorized();
                 break;
