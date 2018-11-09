@@ -192,6 +192,9 @@ class Api
     {
         $params = array_merge($this->options['optionalParameters'], $params);
 
+        // remove empty entries
+        $params = array_filter($params);
+
         $params['PSPID'] = $this->options['pspid'];
         $params['SHASIGN'] = $this->createShaHash($params, $this->options['shaInPassphrase']);
 

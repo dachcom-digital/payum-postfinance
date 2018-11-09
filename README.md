@@ -44,3 +44,7 @@ You'll find all available fields [here](https://e-payment.postfinance.ch/ncol/pa
 ## Copyright and License
 Copyright: [DACHCOM.DIGITAL](http://dachcom-digital.ch)
 For licensing details please visit [LICENSE.md](LICENSE.md)
+
+
+### v1.0.3
+- Do not submit empty values from `optionalParameters`
