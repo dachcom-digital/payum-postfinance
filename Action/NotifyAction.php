@@ -1,4 +1,5 @@
 <?php
+
 namespace DachcomDigital\Payum\PostFinance\Action;
 
 use DachcomDigital\Payum\PostFinance\Api;
@@ -39,7 +40,14 @@ class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayAwareIn
         $this->gateway->execute($httpRequest = new GetHttpRequest());
         $parameters = array_change_key_case($httpRequest->query, CASE_UPPER);
 
-        if (false == $this->api->verifyHash($parameters)) {
+        // First notification needs to be ignored:
+        // PostFinance comes in way too early!
+        if (!isset($details['notification_initiated'])) {
+            $details->replace(['notification_initiated' => true]);
+            throw new HttpResponse('NOTIFICATION_EARLY_STATE', 500);
+        }
+
+        if ($this->api->verifyHash($parameters) === false) {
             throw new HttpResponse('The notification is invalid. Code 1', 400);
         }
 
@@ -49,7 +57,7 @@ class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayAwareIn
         $this->gateway->execute($currency = new GetCurrency($payment->getCurrencyCode()));
         $divisor = pow(10, $currency->exp);
 
-        if ((int)$details['AMOUNT'] !== (int)($parameters['AMOUNT'] * $divisor)) {
+        if ((int) $details['AMOUNT'] !== (int) ($parameters['AMOUNT'] * $divisor)) {
             throw new HttpResponse('The notification is invalid. Code 2', 400);
         }
 
@@ -64,7 +72,6 @@ class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayAwareIn
     {
         return
             $request instanceof Notify &&
-            $request->getModel() instanceof \ArrayAccess
-        ;
+            $request->getModel() instanceof \ArrayAccess;
     }
 }

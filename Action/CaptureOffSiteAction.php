@@ -48,24 +48,24 @@ class CaptureOffSiteAction implements ActionInterface, ApiAwareInterface, Gatewa
         if (isset($httpRequest->query['PAYID'])) {
             $model->replace($httpRequest->query);
         } else {
-            $extradata = $model['COMPLUS'] ? json_decode($model['COMPLUS'], true) : [];
+            $extraData = $model['COMPLUS'] ? json_decode($model['COMPLUS'], true) : [];
 
-            if (false == isset($extradata['capture_token']) && $request->getToken()) {
-                $extradata['capture_token'] = $request->getToken()->getHash();
+            if (false == isset($extraData['capture_token']) && $request->getToken()) {
+                $extraData['capture_token'] = $request->getToken()->getHash();
             }
 
-            if (false == isset($extradata['notify_token']) && $request->getToken() && $this->tokenFactory) {
+            if (false == isset($extraData['notify_token']) && $request->getToken() && $this->tokenFactory) {
                 $notifyToken = $this->tokenFactory->createNotifyToken(
                     $request->getToken()->getGatewayName(),
                     $request->getToken()->getDetails()
                 );
 
-                $extradata['notify_token'] = $notifyToken->getHash();
+                $extraData['notify_token'] = $notifyToken->getHash();
                 $model['PARAMVAR'] = $notifyToken->getHash();
 
             }
 
-            $model['COMPLUS'] = json_encode($extradata);
+            $model['COMPLUS'] = json_encode($extraData);
 
             //payment/capture/xy
             $targetUrl = $request->getToken()->getTargetUrl();
