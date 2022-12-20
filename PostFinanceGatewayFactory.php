@@ -11,10 +11,7 @@ use Payum\Core\GatewayFactory;
 
 class PostFinanceGatewayFactory extends GatewayFactory
 {
-    /**
-     * {@inheritDoc}
-     */
-    protected function populateConfig(ArrayObject $config)
+    protected function populateConfig(ArrayObject $config): void
     {
         $config->defaults([
 
@@ -26,7 +23,7 @@ class PostFinanceGatewayFactory extends GatewayFactory
             'payum.action.convert_payment' => new ConvertPaymentAction(),
         ]);
 
-        if (false == $config['payum.api']) {
+        if (false === $config['payum.api']) {
             $config['payum.default_options'] = [
                 'environment'      => Api::TEST,
                 'shaInPassphrase'  => '',
@@ -34,6 +31,7 @@ class PostFinanceGatewayFactory extends GatewayFactory
                 'pspid'            => '',
                 'sandbox'          => true,
             ];
+
             $config->defaults($config['payum.default_options']);
             $config['payum.required_options'] = ['shaInPassphrase', 'shaOutPassphrase', 'pspid'];
 
@@ -46,7 +44,7 @@ class PostFinanceGatewayFactory extends GatewayFactory
                         'shaInPassphrase'    => $config['shaInPassphrase'],
                         'shaOutPassphrase'   => $config['shaOutPassphrase'],
                         'pspid'              => $config['pspid'],
-                        'optionalParameters' => isset($config['optionalParameters']) ? $config['optionalParameters'] : []
+                        'optionalParameters' => $config['optionalParameters'] ?? []
                     ],
                     $config['payum.http_client'],
                     $config['httplug.message_factory']
