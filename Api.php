@@ -91,9 +91,6 @@ class Api
         'optionalParameters' => []
     ];
 
-    /**
-     * @throws \Payum\Core\Exception\InvalidArgumentException if an option is invalid
-     */
     public function __construct(array $options, HttpClientInterface $client, MessageFactory $messageFactory)
     {
         $this->client = $client;
@@ -168,7 +165,6 @@ class Api
 
         $params['PSPID'] = $this->options['pspid'];
         $params['SHASIGN'] = $this->createShaHash($params, $this->options['shaInPassphrase']);
-
     }
 
     public function createShaHash(array $data, string $signature): string
