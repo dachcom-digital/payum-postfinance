@@ -50,11 +50,11 @@ class CaptureOffSiteAction implements ActionInterface, ApiAwareInterface, Gatewa
         } else {
             $extraData = $model['COMPLUS'] ? json_decode($model['COMPLUS'], true) : [];
 
-            if (false == isset($extraData['capture_token']) && $request->getToken()) {
+            if (false === isset($extraData['capture_token']) && $request->getToken()) {
                 $extraData['capture_token'] = $request->getToken()->getHash();
             }
 
-            if (false == isset($extraData['notify_token']) && $request->getToken() && $this->tokenFactory) {
+            if (false === isset($extraData['notify_token']) && $request->getToken() && $this->tokenFactory) {
                 $notifyToken = $this->tokenFactory->createNotifyToken(
                     $request->getToken()->getGatewayName(),
                     $request->getToken()->getDetails()

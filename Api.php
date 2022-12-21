@@ -9,22 +9,14 @@ use Payum\Core\HttpClientInterface;
 
 class Api
 {
-    /**
-     * @var HttpClientInterface
-     */
-    protected $client;
+    protected HttpClientInterface $client;
+    protected MessageFactory $messageFactory;
 
-    /**
-     * @var MessageFactory
-     */
-    protected $messageFactory;
-
-    const TEST = 'test';
-
-    const PRODUCTION = 'production';
+    public const TEST = 'test';
+    public const PRODUCTION = 'production';
 
     // parameters that will be included in the SHA-OUT Hash
-    protected $signatureParams = [
+    protected array $signatureParams = [
         'AAVADDRESS',
         'AAVCHECK',
         'AAVMAIL',
@@ -90,49 +82,36 @@ class Api
         'WALLET'
     ];
 
-    protected $options = [
-        'hashingMethod'     => 'sha512',
-        'shaInPassphrase'   => null,
-        'shaOutPassphrase'  => null,
-        'pspid'             => null,
-        'environment'       => self::TEST,
+    protected array $options = [
+        'hashingMethod'      => 'sha512',
+        'shaInPassphrase'    => null,
+        'shaOutPassphrase'   => null,
+        'pspid'              => null,
+        'environment'        => self::TEST,
         'optionalParameters' => []
     ];
 
-    /**
-     * @param array               $options
-     * @param HttpClientInterface $client
-     * @param MessageFactory      $messageFactory
-     *
-     * @throws \Payum\Core\Exception\InvalidArgumentException if an option is invalid
-     */
     public function __construct(array $options, HttpClientInterface $client, MessageFactory $messageFactory)
     {
-        $options = ArrayObject::ensureArrayObject($options);
-        $options->defaults($this->options);
-        $options->validateNotEmpty([
+        $this->client = $client;
+        $this->messageFactory = $messageFactory;
+
+        $optionObject = ArrayObject::ensureArrayObject($options);
+        $optionObject->defaults($this->options);
+        $optionObject->validateNotEmpty([
             'shaInPassphrase',
             'shaOutPassphrase',
             'pspid',
         ]);
 
-        if (false == is_bool($options['sandbox'])) {
+        if (false === is_bool($options['sandbox'])) {
             throw new LogicException('The boolean sandbox option must be set.');
         }
 
-        $this->options = $options;
-        $this->client = $client;
-        $this->messageFactory = $messageFactory;
+        $this->options = $optionObject->toUnsafeArray();
     }
 
-    /**
-     * Verify if the hash of the given parameter is correct
-     *
-     * @param array $params
-     *
-     * @return bool
-     */
-    public function verifyHash(array $params)
+    public function verifyHash(array $params): bool
     {
         if (empty($params['SHASIGN'])) {
             return false;
@@ -160,10 +139,7 @@ class Api
         return $hash === $data['SHASIGN'];
     }
 
-    /**
-     * @return string
-     */
-    public function getOffSiteUrl()
+    public function getOffSiteUrl(): string
     {
         if ($this->options['sandbox'] === false) {
             return 'https://e-payment.postfinance.ch/ncol/prod/orderstandard.asp';
@@ -172,23 +148,15 @@ class Api
         return 'https://e-payment.postfinance.ch/ncol/test/orderstandard.asp';
     }
 
-    /**
-     * @param  array $params
-     *
-     * @return array
-     */
-    public function prepareOffSitePayment(array $params)
+    public function prepareOffSitePayment(array $params): array
     {
         //check for valid fields here?
-
         $this->addGlobalParams($params);
+
         return $params;
     }
 
-    /**
-     * @param  array $params
-     */
-    protected function addGlobalParams(array &$params)
+    protected function addGlobalParams(array &$params): void
     {
         $params = array_merge($this->options['optionalParameters'], $params);
 
@@ -197,38 +165,31 @@ class Api
 
         $params['PSPID'] = $this->options['pspid'];
         $params['SHASIGN'] = $this->createShaHash($params, $this->options['shaInPassphrase']);
-
     }
 
-    /**
-     * @param array $data
-     * @param       $signature
-     * @return string
-     */
-    public function createShaHash(array $data, $signature)
+    public function createShaHash(array $data, string $signature): string
     {
         uksort($data, 'strnatcasecmp');
         $hashParts = [];
         foreach ($data as $key => $value) {
+
             $str = $this->stringValue($value);
-            if ($str == '' || $key == 'SHASIGN') {
+            if ($str === '' || $key === 'SHASIGN') {
                 continue;
             }
+
             $hashParts[] = strtoupper($key) . '=' . $str . $signature;
         }
+
         return strtoupper(hash(strtolower($this->options['hashingMethod']), implode('', $hashParts)));
     }
 
-    /**
-     * @param $value
-     * @return string
-     */
-    public function stringValue($value)
+    public function stringValue(mixed $value): string
     {
         if ($value === 0) {
             return '0';
         }
 
-        return (string)$value;
+        return (string) $value;
     }
 }
