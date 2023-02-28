@@ -45,9 +45,5 @@ You'll find all available fields [here](https://e-payment.postfinance.ch/ncol/pa
 Copyright: [DACHCOM.DIGITAL](http://dachcom-digital.ch)
 For licensing details please visit [LICENSE.md](LICENSE.md)
 
-### v1.0.5
-- Round amount before applying integer cast to prevent weird php int roundings.
-### v1.0.4
-- add race condition protection
-### v1.0.3
-- Do not submit empty values from `optionalParameters`
+### v2.0.0
+Pimcore X + CoreShop 3 ready
