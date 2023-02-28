@@ -46,4 +46,4 @@ Copyright: [DACHCOM.DIGITAL](http://dachcom-digital.ch)
 For licensing details please visit [LICENSE.md](LICENSE.md)
 
 ### v2.0.0
-Pimcore X + CoreShop 3 ready
+- Bump dependencies, code improvements
